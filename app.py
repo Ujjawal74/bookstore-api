@@ -195,8 +195,9 @@ def delete():
 def find():
     if request.method == 'POST':
         query = request.get_json()['query']
+        # % -> some character one or more
         books = db.session.execute(
-            db.select(Books).filter(Books.title.like(f'{query}%'))).scalars()
+            db.select(Books).filter(Books.title.like(f'%{query}%') | Books.author.like(f'%{query}%') | Books.genre.like(f'%{query}%'))).scalars()
         res = books_schema.dump(books)
 
         return make_response(jsonify({'status': 'ok', 'books': res}))
@@ -204,4 +205,4 @@ def find():
 
 # staring the flask server on custom socket
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=False, host="0.0.0.0", port=5000)
