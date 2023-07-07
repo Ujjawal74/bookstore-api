@@ -1,0 +1,1 @@
+static folder is always public accessible other then that we have to serve it from a directory with settings
