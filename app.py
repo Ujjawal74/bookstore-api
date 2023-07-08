@@ -125,7 +125,7 @@ def upload():
     filename = secure_filename(f"cover_{curr_time}.jpg")
     target = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(target)
-    return make_response(jsonify({"url": f"http://localhost:5000/{target}"}))
+    return make_response(jsonify({"url": f"https://ujjawal74.pythonanywhere.com/{target}"}))
 
 # serve uploaded file
 
