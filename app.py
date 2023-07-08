@@ -61,7 +61,7 @@ books_schema = BookSchema(many=True)  # multiple rows
 #     db.create_all()
 
 
-# uploads of images dierctory & configuration
+# uploads of images directory & configuration
 UPLOAD_FOLDER = "uploads"
 # ALLOWED_EXTENSIONS = {'jpeg', 'jpg', 'png', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -188,7 +188,7 @@ def delete():
         db.session.commit()
         return make_response(jsonify({'status': 'ok', 'msg': 'deletion success'}))
 
-# serach with name
+# search with name
 
 
 @app.route("/search", methods=['POST'])
