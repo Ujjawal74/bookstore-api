@@ -66,6 +66,9 @@ UPLOAD_FOLDER = "uploads"
 # ALLOWED_EXTENSIONS = {'jpeg', 'jpg', 'png', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+HOST_URL = 'https://ujjawal74.pythonanywhere.com'
+# HOST_URL = 'http://localhost:5000'
+
 # method to get date from string into datetime object for sqlite
 
 
@@ -115,8 +118,22 @@ def get():
         books = books_schema.dump(allBooks)
         return make_response(jsonify({"books": books}))
 
-# upload image route
 
+# get data of single book
+@app.route("/get/<id>", methods=['GET', 'POST'])
+def get_one(id):
+    try:
+        book = db.session.execute(
+            db.select(Books).filter_by(id=int(id))).scalar_one()
+
+        res = book_schema.dump(book)
+        return make_response(jsonify({'book': res}))
+
+    except Exception as e:
+        return make_response(jsonify({"status": "error"}))
+
+
+# upload image route
 
 @app.route("/upload", methods=['POST'])
 def upload():
@@ -125,7 +142,7 @@ def upload():
     filename = secure_filename(f"cover_{curr_time}.jpg")
     target = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(target)
-    return make_response(jsonify({"url": f"https://ujjawal74.pythonanywhere.com/{target}"}))
+    return make_response(jsonify({"url": f"{HOST_URL}/{target}"}))
 
 # serve uploaded file
 
@@ -148,7 +165,7 @@ def add():
             db.session.commit()
             return make_response(jsonify({'status': 'ok', 'msg': 'book added sucessfully'}))
         except Exception as e:
-            return make_response(jsonify({'status': 'error', 'error': e}))
+            return make_response(jsonify({'status': 'error'}))
 
 # edit an existing book
 
